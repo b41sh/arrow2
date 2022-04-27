@@ -175,6 +175,21 @@ where
             });
             Box::new(iter) as _
         }
+        LargeList(inner) => {
+            let iter = columns_to_iter_recursive(
+                vec![columns.pop().unwrap()],
+                types,
+                inner.as_ref().clone(),
+                init,
+                chunk_size,
+            )?;
+            let iter = iter.map(move |x| {
+                let (mut nested, array) = x?;
+                let array = create_list(field.data_type().clone(), &mut nested, array)?;
+                Ok((nested, array))
+            });
+            Box::new(iter) as _
+        }
         Struct(fields) => {
             let columns = fields
                 .iter()
