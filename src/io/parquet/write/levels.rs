@@ -218,7 +218,7 @@ pub fn write_def_levels<O: Offset>(
     validity: Option<&Bitmap>,
     version: Version,
 ) -> Result<()> {
-    let num_bits = 2;
+    let num_bits = 1 + validity.is_some() as u8;
 
     match version {
         Version::V1 => {
