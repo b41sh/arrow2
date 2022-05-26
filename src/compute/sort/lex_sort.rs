@@ -79,8 +79,16 @@ fn build_is_valid(array: &dyn Array) -> IsValid {
 }
 
 pub(crate) fn build_compare(array: &dyn Array, sort_option: SortOptions) -> Result<DynComparator> {
+    build_compare_impl(array, sort_option, ord::build_compare)
+}
+
+pub(crate) fn build_compare_impl(
+    array: &dyn Array,
+    sort_option: SortOptions,
+    build_compare_fn: Fn(&dyn Array, &dyn Array) -> Result<DynComparator>,
+) -> Result<DynComparator> {
     let is_valid = build_is_valid(array);
-    let comparator = ord::build_compare(array, array)?;
+    let comparator = build_compare_fn(array, array)?;
 
     Ok(match (sort_option.descending, sort_option.nulls_first) {
         (true, true) => Box::new(move |i: usize, j: usize| match (is_valid(i), is_valid(j)) {
@@ -128,6 +136,14 @@ pub fn lexsort_to_indices<I: Index>(
     columns: &[SortColumn],
     limit: Option<usize>,
 ) -> Result<PrimitiveArray<I>> {
+    lexsort_to_indices_impl(column, limit, ord::build_compare)
+}
+
+pub fn lexsort_to_indices_impl<I: Index>(
+    columns: &[SortColumn],
+    limit: Option<usize>,
+    build_compare_fn: Fn(&dyn Array, &dyn Array) -> Result<DynComparator>,
+) -> Result<PrimitiveArray<I>> {
     if columns.is_empty() {
         return Err(ArrowError::InvalidArgumentError(
             "Sort requires at least one column".to_string(),
@@ -150,7 +166,11 @@ pub fn lexsort_to_indices<I: Index>(
     let comparators = columns
         .iter()
         .map(|column| -> Result<DynComparator> {
-            build_compare(column.values, column.options.unwrap_or_default())
+            build_compare_impl(
+                column.values,
+                column.options.unwrap_or_default(),
+                build_compare_fn,
+            )
         })
         .collect::<Result<Vec<DynComparator>>>()?;
 
