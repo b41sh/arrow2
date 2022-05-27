@@ -79,13 +79,13 @@ fn build_is_valid(array: &dyn Array) -> IsValid {
 }
 
 pub(crate) fn build_compare(array: &dyn Array, sort_option: SortOptions) -> Result<DynComparator> {
-    build_compare_impl(array, sort_option, ord::build_compare)
+    build_compare_impl(array, sort_option, &ord::build_compare)
 }
 
 pub(crate) fn build_compare_impl(
     array: &dyn Array,
     sort_option: SortOptions,
-    build_compare_fn: Fn(&dyn Array, &dyn Array) -> Result<DynComparator>,
+    build_compare_fn: &dyn Fn(&dyn Array, &dyn Array) -> Result<DynComparator>,
 ) -> Result<DynComparator> {
     let is_valid = build_is_valid(array);
     let comparator = build_compare_fn(array, array)?;
@@ -136,13 +136,13 @@ pub fn lexsort_to_indices<I: Index>(
     columns: &[SortColumn],
     limit: Option<usize>,
 ) -> Result<PrimitiveArray<I>> {
-    lexsort_to_indices_impl(column, limit, ord::build_compare)
+    lexsort_to_indices_impl(columns, limit, &ord::build_compare)
 }
 
 pub fn lexsort_to_indices_impl<I: Index>(
     columns: &[SortColumn],
     limit: Option<usize>,
-    build_compare_fn: Fn(&dyn Array, &dyn Array) -> Result<DynComparator>,
+    build_compare_fn: &dyn Fn(&dyn Array, &dyn Array) -> Result<DynComparator>,
 ) -> Result<PrimitiveArray<I>> {
     if columns.is_empty() {
         return Err(ArrowError::InvalidArgumentError(
@@ -152,7 +152,11 @@ pub fn lexsort_to_indices_impl<I: Index>(
     if columns.len() == 1 {
         // fallback to non-lexical sort
         let column = &columns[0];
-        return sort_to_indices(column.values, &column.options.unwrap_or_default(), limit);
+        if let Ok(indices) =
+            sort_to_indices(column.values, &column.options.unwrap_or_default(), limit)
+        {
+            return Ok(indices);
+        }
     }
 
     let row_count = columns[0].values.len();

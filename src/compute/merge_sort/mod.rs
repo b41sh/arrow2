@@ -470,12 +470,12 @@ type IsValid<'a> = Box<dyn Fn(usize) -> bool + 'a>;
 pub fn build_comparator<'a>(
     pairs: &'a [(&'a [&'a dyn Array], &SortOptions)],
 ) -> Result<Comparator<'a>> {
-    build_comparator_impl(pairs, build_compare)
+    build_comparator_impl(pairs, &build_compare)
 }
 
 pub fn build_comparator_impl<'a>(
     pairs: &'a [(&'a [&'a dyn Array], &SortOptions)],
-    build_compare_fn: Fn(&dyn Array, &dyn Array) -> Result<DynComparator>,
+    build_compare_fn: &dyn Fn(&dyn Array, &dyn Array) -> Result<DynComparator>,
 ) -> Result<Comparator<'a>> {
     // prepare the comparison function of _values_ between all pairs of arrays
     let indices_pairs = (0..pairs[0].0.len())
