@@ -46,6 +46,7 @@ pub use parquet2::{
     },
     FallibleStreamingIterator,
 };
+pub use utils::write_def_levels;
 
 /// Currently supported options to write to parquet
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
