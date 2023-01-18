@@ -67,7 +67,7 @@ pub use schema::to_parquet_type;
 pub use sink::FileSink;
 
 pub use pages::array_to_columns;
-pub use pages::Nested;
+pub use pages::{ListNested, Nested};
 
 /// returns offset and length to slice the leaf values
 pub(self) fn slice_nested_leaf(nested: &[Nested]) -> (usize, usize) {
