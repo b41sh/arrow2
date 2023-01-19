@@ -32,7 +32,7 @@ use crate::error::{Error, Result};
 use crate::types::days_ms;
 use crate::types::NativeType;
 
-use parquet2::schema::types::PrimitiveType as ParquetPrimitiveType;
+pub use parquet2::schema::types::PrimitiveType as ParquetPrimitiveType;
 pub use parquet2::{
     compression::{BrotliLevel, CompressionOptions, GzipLevel, ZstdLevel},
     encoding::Encoding,
