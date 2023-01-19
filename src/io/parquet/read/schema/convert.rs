@@ -268,7 +268,7 @@ fn to_group_type(
 }
 
 /// Checks whether this schema is nullable.
-pub(crate) fn is_nullable(field_info: &FieldInfo) -> bool {
+pub fn is_nullable(field_info: &FieldInfo) -> bool {
     match field_info.repetition {
         Repetition::Optional => true,
         Repetition::Repeated => true,
