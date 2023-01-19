@@ -47,6 +47,7 @@ pub use parquet2::{
     FallibleStreamingIterator,
 };
 pub use utils::write_def_levels;
+pub use nested::write_rep_and_def;
 
 /// Currently supported options to write to parquet
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -71,7 +72,7 @@ pub use pages::array_to_columns;
 pub use pages::{ListNested, Nested};
 
 /// returns offset and length to slice the leaf values
-pub(self) fn slice_nested_leaf(nested: &[Nested]) -> (usize, usize) {
+pub fn slice_nested_leaf(nested: &[Nested]) -> (usize, usize) {
     // find the deepest recursive dremel structure as that one determines how many values we must
     // take
     let mut out = (0, 0);
