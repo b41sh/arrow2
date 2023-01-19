@@ -48,6 +48,9 @@ pub use parquet2::{
 };
 pub use utils::write_def_levels;
 pub use nested::write_rep_and_def;
+pub use pages::to_nested;
+pub use pages::to_leaves;
+pub use pages::to_parquet_leaves;
 
 /// Currently supported options to write to parquet
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
