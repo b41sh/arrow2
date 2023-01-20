@@ -159,7 +159,7 @@ pub fn can_encode(data_type: &DataType, encoding: Encoding) -> bool {
     )
 }
 
-fn slice_parquet_array<'a>(
+pub fn slice_parquet_array<'a>(
     array: &'a dyn Array,
     nested: &'a [Nested<'a>],
     offset: usize,
@@ -191,7 +191,7 @@ fn slice_parquet_array<'a>(
     }
 }
 
-fn get_max_length(array: &dyn Array, nested: &[Nested]) -> usize {
+pub fn get_max_length(array: &dyn Array, nested: &[Nested]) -> usize {
     // get the length that should be sliced.
     // that is the inner nested structure that
     // dictates how often the primitive should be repeated
