@@ -128,7 +128,7 @@ where
 }
 
 /// Returns the number of (parquet) columns that a [`DataType`] contains.
-fn n_columns(data_type: &DataType) -> usize {
+pub fn n_columns(data_type: &DataType) -> usize {
     use crate::datatypes::PhysicalType::*;
     match data_type.to_physical_type() {
         Null | Boolean | Primitive(_) | Binary | FixedSizeBinary | LargeBinary | Utf8
