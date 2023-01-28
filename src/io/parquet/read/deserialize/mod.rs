@@ -21,7 +21,7 @@ use crate::{
     offset::Offsets,
 };
 
-use self::nested_utils::{InitNested, NestedArrayIter, NestedState};
+pub use self::nested_utils::{InitNested, NestedArrayIter, NestedState};
 use simple::page_iter_to_arrays;
 
 use super::*;
