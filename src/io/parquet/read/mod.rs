@@ -34,7 +34,7 @@ pub use parquet2::{
 
 use crate::{array::Array, error::Result};
 
-pub use deserialize::{column_iter_to_arrays, get_page_iterator, n_columns, InitNested, NestedState, init_nested};
+pub use deserialize::{column_iter_to_arrays, get_page_iterator, n_columns, InitNested, NestedState, init_nested, create_list};
 pub use file::{FileReader, RowGroupReader};
 pub use row_group::*;
 pub use schema::{infer_schema, FileMetaData};

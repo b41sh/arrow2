@@ -43,7 +43,7 @@ pub fn get_page_iterator<R: Read + Seek>(
     )?)
 }
 
-fn create_list(
+pub fn create_list(
     data_type: DataType,
     nested: &mut NestedState,
     values: Box<dyn Array>,
