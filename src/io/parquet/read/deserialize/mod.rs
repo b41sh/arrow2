@@ -214,3 +214,19 @@ where
             .map(|x| x.map(|x| x.1)),
     ))
 }
+
+pub fn column_iter_to_arrays2<'a, I: 'a>(
+    columns: Vec<I>,
+    types: Vec<&PrimitiveType>,
+    field: Field,
+    chunk_size: Option<usize>,
+    num_rows: usize,
+) -> Result<ArrayIter<'a>>
+where
+    I: Pages,
+{
+    Ok(Box::new(
+        columns_to_iter_recursive(columns, types, field, vec![InitNested::Struct(true)], num_rows, chunk_size)?
+            .map(|x| x.map(|x| x.1)),
+    ))
+}
