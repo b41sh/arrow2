@@ -215,7 +215,7 @@ where
     ))
 }
 
-pub fn column_iter_to_arrays2<'a, I: 'a>(
+pub fn column_iter_to_arrayss<'a, I: 'a>(
     columns: Vec<I>,
     types: Vec<&PrimitiveType>,
     field: Field,
